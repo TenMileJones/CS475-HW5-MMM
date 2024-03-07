@@ -12,5 +12,12 @@ void mmm_freeup();
 void mmm_seq();
 void* mmm_par(void *);
 double mmm_verify();
+double mmm_cell(int i, int j);
+
+typedef struct thread_args {
+  int tid;    // the given thread id (0, 1, ...)
+  long start; // start row of final matrix this thread is calculating
+  long end;   // end row of final matrix this thread is calculating
+} thread_args;
 
 #endif /* MMM_H_ */

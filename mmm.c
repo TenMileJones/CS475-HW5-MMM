@@ -74,14 +74,35 @@ void mmm_freeup() {
  * Sequential MMM (size is in the global var)
  */
 void mmm_seq() {
-	// TODO - code to perform sequential MMM
+	int i = 0, j = 0;
+	while (i < size){
+		while (j < size){
+			SEQ_MATRIX[i][j] = mmm_cell(i, j);
+			j++;
+		}
+		i++;
+	}
+}
+
+/**
+ * Calculates value of cell at i, j
+*/
+double mmm_cell(int i, int j) {
+	double answer = 0;
+	int count = 0;
+	while (count < size){
+		answer += (A[i][count] * B[count][j]);
+		count++;
+	}
+	return answer;
 }
 
 /**
  * Parallel MMM
  */
 void *mmm_par(void *args) {
-	// TODO - code to perform parallel MMM
+	// iMin = start, iMax = end, jMin = start, jMax = end
+	// then same as seq
 }
 
 /**
