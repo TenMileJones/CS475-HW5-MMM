@@ -10,15 +10,30 @@
  * the input matrices with random numbers from 0 to 99
  */
 void mmm_init() {
-	// TODO
-	// A = (double **) malloc(size * sizeof(double*));
-	// allocate the rest of the matrices
-
-	// TODO
+	// Allocate matrices
+	A = (double **) malloc(size * sizeof(double*));
+	B = (double **) malloc(size * sizeof(double*));
+	SEQ_MATRIX = (double **) malloc(size * sizeof(double*));
+	PAR_MATRIX = (double **) malloc(size * sizeof(double*));
+	
 	srand((unsigned)time(NULL));	// seed the random number generator
  	// initialize A and B with random values between 0 and 99
 	// initialize SEQ_MATRIX and PAR_MATRIX with 0s
-
+	int i = 0, j = 0;
+	while (i < size){
+		A[i] = (double *) malloc(size * sizeof(double));
+		B[i] = (double *) malloc(size * sizeof(double));
+		SEQ_MATRIX[i] = (double *) malloc(size * sizeof(double));
+		PAR_MATRIX[i] = (double *) malloc(size * sizeof(double));
+		while (j < size){
+			A[i][j] = rand() % 100;
+			B[i][j] = rand() % 100;
+			SEQ_MATRIX[i][j] = 0;
+			PAR_MATRIX[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
 }
 
 /**
