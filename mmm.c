@@ -34,7 +34,18 @@ void mmm_reset(double **matrix) {
  * (their size is in the global var)
  */
 void mmm_freeup() {
-	// TODO
+	int i = 0;
+    while (i < size) {
+		free(A[i]);
+		free(B[i]);
+		free(SEQ_MATRIX[i]);
+		free(PAR_MATRIX[i]);
+        i++;
+	}
+    free(A);
+	free(B);
+	free(SEQ_MATRIX);
+	free(PAR_MATRIX);
 }
 
 /**
