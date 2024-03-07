@@ -32,8 +32,10 @@ int main(int argc, char *argv[]) {
 	if (*argv[1] == 'S') {
 		mode = 0;
 		num_threads = 1;
-		printf("%d\n", atoi(argv[2]));
 		size = atoi(argv[2]);
+
+		// print initial summary
+		printf("========\nmode: sequential\nthread count: 1\nsize: %d\n========\n", size);
 
 		// initialize my matrices
 		mmm_init();
@@ -55,8 +57,7 @@ int main(int argc, char *argv[]) {
 			i++;
 		}
 
-		// print summary
-		printf("========\nmode: sequential\nthread count: 1\nsize: %d\n========\n", size);
+		// print time report
 		double avg = (times[0]+times[1]+times[2]+times[3])/4;
 		printf("Sequential Time (avg of 4 runs): %f sec\n", avg);
 
