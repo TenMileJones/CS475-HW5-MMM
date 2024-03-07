@@ -26,7 +26,14 @@ void mmm_init() {
  * @param matrix pointer to a 2D array
  */
 void mmm_reset(double **matrix) {
-	// TODO
+	int i = 0, j = 0;
+	while (i < size){
+		while (j < size){
+			matrix[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
 }
 
 /**
