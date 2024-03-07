@@ -6,7 +6,7 @@
 #include "mmm.h"
 
 // shared  globals
-unsigned int mode;
+unsigned int mode; // 0 for S, 1 for P
 unsigned int size, num_threads;
 double **A, **B, **SEQ_MATRIX, **PAR_MATRIX;
 
@@ -14,22 +14,65 @@ int main(int argc, char *argv[]) {
 
 	// TODO - deal with command line arguments, save the "mode"
 	
+	if (argc < 3){
+		printf("Usage: ./mmm S <size>\nUsage: ./mmm P <num threads> <size>\n");
+		exit(0);
+	} 
+	if ((*argv[1] != 'S') && (*argv[1] != 'P')){
+		printf("Error: mode must be either S (sequential) or P (parallel)\n");
+		exit(0);
+	}
 
-
-	// "size" and "num threads" into globals so threads can see them
-
-	// initialize my matrices
-	mmm_init();
-
+	
+	// initialize time-storing variables
+	double times[] = {0.0,0.0,0.0,0.0};
 	double clockstart, clockend;
-	clockstart = rtclock();	// start the clock
 
-	// << stuff I want to clock here >>
+	// "size" "mode" and "num_threads" into globals so threads can see them
+	if (*argv[1] == 'S') {
+		mode = 0;
+		num_threads = 1;
+		printf("%d\n", atoi(argv[2]));
+		size = atoi(argv[2]);
 
-	clockend = rtclock(); // stop the clock
-	printf("Time taken: %.6f sec\n", (clockend - clockstart));
+		// initialize my matrices
+		mmm_init();
 
-	// free some stuff up
+		// warmup cache
+		mmm_seq();
+		mmm_reset(SEQ_MATRIX);
+		
+		// run 4 times
+		int i = 0;
+		while (i < 4){
+			clockstart = rtclock();	// start the clock
+			mmm_seq();
+			clockend = rtclock(); // stop the clock
+			// reset
+			mmm_reset(SEQ_MATRIX);
+			// add time to time array
+			times[i] = (clockend-clockstart);
+			i++;
+		}
+
+		// print summary
+		printf("========\nmode: sequential\nthread count: 1\nsize: %d\n========\n", size);
+		double avg = (times[0]+times[1]+times[2]+times[3])/4;
+		printf("Sequential Time (avg of 4 runs): %f sec\n", avg);
+
+	} else if (*argv[1] == 'P') {
+		mode = 1;
+		num_threads = atoi(argv[2]);
+		size = atoi(argv[3]);
+
+		// initialize my matrices
+		mmm_init();
+
+		// warmup cache
+	}
+
+	mmm_freeup();
+
 
 	// IDEAs: for assigning which rows to threads
 	// do ceiling division, and then remove extra rows

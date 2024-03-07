@@ -11,20 +11,20 @@
  */
 void mmm_init() {
 	// Allocate matrices
-	A = (double **) malloc(size * sizeof(double*));
-	B = (double **) malloc(size * sizeof(double*));
-	SEQ_MATRIX = (double **) malloc(size * sizeof(double*));
-	PAR_MATRIX = (double **) malloc(size * sizeof(double*));
+	A = (double**) malloc(size * sizeof(double*));
+	B = (double**) malloc(size * sizeof(double*));
+	SEQ_MATRIX = (double**) malloc(size * sizeof(double*));
+	PAR_MATRIX = (double**) malloc(size * sizeof(double*));
 	
 	srand((unsigned)time(NULL));	// seed the random number generator
  	// initialize A and B with random values between 0 and 99
 	// initialize SEQ_MATRIX and PAR_MATRIX with 0s
 	int i = 0, j = 0;
 	while (i < size){
-		A[i] = (double *) malloc(size * sizeof(double));
-		B[i] = (double *) malloc(size * sizeof(double));
-		SEQ_MATRIX[i] = (double *) malloc(size * sizeof(double));
-		PAR_MATRIX[i] = (double *) malloc(size * sizeof(double));
+		A[i] = (double*) malloc(size * sizeof(double));
+		B[i] = (double*) malloc(size * sizeof(double));
+		SEQ_MATRIX[i] = (double*) malloc(size * sizeof(double));
+		PAR_MATRIX[i] = (double*) malloc(size * sizeof(double));
 		while (j < size){
 			A[i][j] = rand() % 100;
 			B[i][j] = rand() % 100;
@@ -32,6 +32,7 @@ void mmm_init() {
 			PAR_MATRIX[i][j] = 0;
 			j++;
 		}
+		j = 0;
 		i++;
 	}
 }
@@ -47,6 +48,7 @@ void mmm_reset(double **matrix) {
 			matrix[i][j] = 0;
 			j++;
 		}
+		j = 0;
 		i++;
 	}
 }
@@ -80,6 +82,7 @@ void mmm_seq() {
 			SEQ_MATRIX[i][j] = mmm_cell(i, j);
 			j++;
 		}
+		j = 0;
 		i++;
 	}
 }
@@ -100,9 +103,10 @@ double mmm_cell(int i, int j) {
 /**
  * Parallel MMM
  */
-void *mmm_par(void *args) {
+void* mmm_par(void *args) {
 	// iMin = start, iMax = end, jMin = start, jMax = end
 	// then same as seq
+	return NULL;
 }
 
 /**
