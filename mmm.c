@@ -24,6 +24,7 @@ void mmm_init() {
 		B[i] = (double*) malloc(size * sizeof(double));
 		SEQ_MATRIX[i] = (double*) malloc(size * sizeof(double));
 		PAR_MATRIX[i] = (double*) malloc(size * sizeof(double));
+
 		for (int j = 0; j < size; j++){
 			A[i][j] = rand() % 100;
 			B[i][j] = rand() % 100;
@@ -89,8 +90,17 @@ double mmm_cell(int i, int j) {
  * Parallel MMM
  */
 void* mmm_par(void *args) {
-	// iMin = start, iMax = end, jMin = start, jMax = end
-	// then same as seq
+	// cast args
+	thread_args *params = (thread_args*) args;
+
+	// start must be first row thread works on, 
+	//  end must be the row the next thread starts on
+	for (int i = params->start; i < params->end; i++) {
+		for (int j = 0; j < size; j++) {
+			PAR_MATRIX[i][j] = mmm_cell(i, j);
+		}		
+	}
+
 	return NULL;
 }
 
@@ -104,9 +114,11 @@ void* mmm_par(void *args) {
 double mmm_verify() {
 	double largestError = 0;
 	double errorBeingChecked;
+
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			errorBeingChecked = fabs(PAR_MATRIX[i][j] - SEQ_MATRIX[i][j]);
+			
 			if(errorBeingChecked > largestError){
 				largestError = errorBeingChecked;
 			}
