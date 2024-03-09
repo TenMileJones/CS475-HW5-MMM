@@ -43,8 +43,6 @@ void mmm_reset(double **matrix) {
 			matrix[i][j] = 0;
 		}		
 	}
-
-	
 }
 
 /**
@@ -104,9 +102,15 @@ void* mmm_par(void *args) {
  * in the result matrices
  */
 double mmm_verify() {
-	// TODO
-	// You may find the math.h function fabs() to be useful here (absolute value)
-	int largestError = 0;
-
+	double largestError = 0;
+	double errorBeingChecked;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			errorBeingChecked = fabs(PAR_MATRIX[i][j] - SEQ_MATRIX[i][j]);
+			if(errorBeingChecked > largestError){
+				largestError = errorBeingChecked;
+			}
+		}		
+	}
 	return largestError;
 }
