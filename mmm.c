@@ -19,21 +19,17 @@ void mmm_init() {
 	srand((unsigned)time(NULL));	// seed the random number generator
  	// initialize A and B with random values between 0 and 99
 	// initialize SEQ_MATRIX and PAR_MATRIX with 0s
-	int i = 0, j = 0;
-	while (i < size){
+	for (int i = 0; i < size; i++){
 		A[i] = (double*) malloc(size * sizeof(double));
 		B[i] = (double*) malloc(size * sizeof(double));
 		SEQ_MATRIX[i] = (double*) malloc(size * sizeof(double));
 		PAR_MATRIX[i] = (double*) malloc(size * sizeof(double));
-		while (j < size){
+		for (int j = 0; j < size; j++){
 			A[i][j] = rand() % 100;
 			B[i][j] = rand() % 100;
 			SEQ_MATRIX[i][j] = 0;
 			PAR_MATRIX[i][j] = 0;
-			j++;
 		}
-		j = 0;
-		i++;
 	}
 }
 
@@ -42,15 +38,13 @@ void mmm_init() {
  * @param matrix pointer to a 2D array
  */
 void mmm_reset(double **matrix) {
-	int i = 0, j = 0;
-	while (i < size){
-		while (j < size){
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
 			matrix[i][j] = 0;
-			j++;
-		}
-		j = 0;
-		i++;
+		}		
 	}
+
+	
 }
 
 /**
@@ -58,13 +52,12 @@ void mmm_reset(double **matrix) {
  * (their size is in the global var)
  */
 void mmm_freeup() {
-	int i = 0;
-    while (i < size) {
+	
+    for (int i = 0; i < size; i++) {
 		free(A[i]);
 		free(B[i]);
 		free(SEQ_MATRIX[i]);
 		free(PAR_MATRIX[i]);
-        i++;
 	}
     free(A);
 	free(B);
@@ -76,14 +69,10 @@ void mmm_freeup() {
  * Sequential MMM (size is in the global var)
  */
 void mmm_seq() {
-	int i = 0, j = 0;
-	while (i < size){
-		while (j < size){
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
 			SEQ_MATRIX[i][j] = mmm_cell(i, j);
-			j++;
-		}
-		j = 0;
-		i++;
+		}		
 	}
 }
 
@@ -92,10 +81,8 @@ void mmm_seq() {
 */
 double mmm_cell(int i, int j) {
 	double answer = 0;
-	int count = 0;
-	while (count < size){
+	for (int count = 0; count < size; count++) {
 		answer += (A[i][count] * B[count][j]);
-		count++;
 	}
 	return answer;
 }
@@ -119,5 +106,7 @@ void* mmm_par(void *args) {
 double mmm_verify() {
 	// TODO
 	// You may find the math.h function fabs() to be useful here (absolute value)
-	return -1;
+	int largestError = 0;
+
+	return largestError;
 }
